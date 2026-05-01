@@ -1,1 +1,1 @@
-//Event controll
+//Event control
