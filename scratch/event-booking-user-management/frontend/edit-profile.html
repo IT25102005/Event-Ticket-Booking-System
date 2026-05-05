@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - EventBooker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/user-management.css">
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glow-shadow);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            outline: none;
+        }
+        .form-group input:focus {
+            border-color: var(--neon-cyan);
+        }
+        .btn-submit {
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, var(--deep-purple), var(--neon-cyan));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        #messageBox {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="logo-container">EventBooker</div>
+        <ul class="nav-links">
+            <li><a href="user-dashboard.html">Dashboard</a></li>
+            <li><a href="profile.html">My Profile</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <div class="form-container">
+            <h2>Edit Profile</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Update your personal details.</p>
+            
+            <form id="editProfileForm">
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" id="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" id="lastName" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" id="phoneNumber">
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" id="address">
+                </div>
+                <button type="submit" class="btn-submit">Save Changes</button>
+                <div id="messageBox"></div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userStr = localStorage.getItem('user');
+            if (!userStr) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const user = JSON.parse(userStr);
+            
+            // Pre-fill form
+            document.getElementById('firstName').value = user.firstName;
+            document.getElementById('lastName').value = user.lastName;
+            document.getElementById('phoneNumber').value = user.phoneNumber || '';
+            document.getElementById('address').value = user.address || '';
+
+            document.getElementById('editProfileForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const messageBox = document.getElementById('messageBox');
+                
+                const payload = {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    phoneNumber: document.getElementById('phoneNumber').value,
+                    address: document.getElementById('address').value
+                };
+
+                try {
+                    const response = await fetch(`http://localhost:8080/api/users/${user.userId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.ok) {
+                        const updatedUser = await response.json();
+                        localStorage.setItem('user', JSON.stringify(updatedUser));
+                        messageBox.innerHTML = '<span style="color: #00FF80;">Profile updated successfully!</span>';
+                        setTimeout(() => { window.location.href = 'profile.html'; }, 1500);
+                    } else {
+                        messageBox.innerHTML = '<span style="color: #FF4081;">Failed to update profile.</span>';
+                    }
+                } catch (error) {
+                    messageBox.innerHTML = '<span style="color: #FF4081;">Connection error.</span>';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

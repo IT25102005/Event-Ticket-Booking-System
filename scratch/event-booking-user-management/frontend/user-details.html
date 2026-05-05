@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details - Admin View</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/user-management.css">
+    <style>
+        .details-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glow-shadow);
+        }
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .data-item label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+        .data-item span {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--glass-border);
+        }
+        .btn-action {
+            padding: 0.8rem 1.5rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-action:hover { background: rgba(255, 255, 255, 0.1); }
+        .btn-danger { border-color: #FF4081; color: #FF4081; }
+        .btn-danger:hover { background: rgba(255, 64, 129, 0.1); }
+        .btn-warning { border-color: #FFD700; color: #FFD700; }
+        .btn-success { border-color: #00FF80; color: #00FF80; }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="logo-container">EventBooker Admin</div>
+        <ul class="nav-links">
+            <li><a href="user-dashboard.html">Dashboard</a></li>
+            <li><a href="profile.html">My Profile</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <a href="user-dashboard.html" style="color: var(--neon-cyan); text-decoration: none; margin-bottom: 1rem; display: inline-block;">&larr; Back to Dashboard</a>
+        <div class="details-container">
+            <div class="user-header">
+                <div>
+                    <h2 id="uName">User Name</h2>
+                    <span id="uRoleDesc" style="color: var(--text-secondary);"></span>
+                </div>
+                <div>
+                    <span class="badge" id="uRole">ROLE</span>
+                    <span class="badge" id="uStatus">STATUS</span>
+                </div>
+            </div>
+
+            <div class="data-grid">
+                <div class="data-item"><label>ID</label><span id="uId">-</span></div>
+                <div class="data-item"><label>Username</label><span id="uUsername">-</span></div>
+                <div class="data-item"><label>Email</label><span id="uEmail">-</span></div>
+                <div class="data-item"><label>Phone</label><span id="uPhone">-</span></div>
+                <div class="data-item"><label>Address</label><span id="uAddress">-</span></div>
+                <div class="data-item"><label>Joined Date</label><span id="uDate">-</span></div>
+            </div>
+
+            <div class="admin-actions">
+                <button class="btn-action btn-success" onclick="updateStatus('ACTIVE')">Activate</button>
+                <button class="btn-action btn-warning" onclick="updateStatus('SUSPENDED')">Suspend</button>
+                <button class="btn-action btn-danger" onclick="deleteUser()">Delete User</button>
+            </div>
+            <div id="actionMsg" style="margin-top: 1rem;"></div>
+        </div>
+    </main>
+
+    <script>
+        // Note: In a real app, the user ID would be passed via URL parameter (e.g., ?id=1)
+        // For demonstration, we will just show a static placeholder or load from local storage if clicked from dashboard.
+        
+        function updateStatus(status) {
+            if(confirm(`Are you sure you want to change status to ${status}?`)) {
+                // await fetch(`/api/users/${userId}/activate` or `/deactivate` ...)
+                document.getElementById('actionMsg').innerHTML = `<span style="color: #00FF80;">Status updated to ${status}</span>`;
+                document.getElementById('uStatus').innerText = status;
+            }
+        }
+
+        function deleteUser() {
+            if(confirm('WARNING: Are you sure you want to permanently delete this user?')) {
+                // await fetch(`/api/users/${userId}`, { method: 'DELETE' })
+                document.getElementById('actionMsg').innerHTML = `<span style="color: #FF4081;">User deleted successfully.</span>`;
+                setTimeout(() => window.location.href = 'user-dashboard.html', 1500);
+            }
+        }
+    </script>
+</body>
+</html>

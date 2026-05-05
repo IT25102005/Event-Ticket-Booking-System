@@ -1,0 +1,9 @@
+# Task List: User & Account Management Implementation
+
+- [/] Initialize Spring Boot Project (`pom.xml`, `application.properties`)
+- [ ] Backend Models (`User`, `CustomerUser`, `AdminUser`, Enums)
+- [ ] Backend Repositories & Exceptions
+- [ ] Backend Services (`AuthService`, `UserService`)
+- [ ] Backend Controllers & Security Config (`AuthController`, `UserController`, `PasswordConfig`)
+- [ ] Frontend Pages & JS (`login.html`, `register.html`, `auth.js`, etc.)
+- [ ] Documentation (`sql_inserts.sql`, `oop_explanation.md`)
