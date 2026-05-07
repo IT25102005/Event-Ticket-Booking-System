@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Dashboard - Event Ticket Booking</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">PaymentHub</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="payment-dashboard.html" class="active">Payments</a></li>
+                <li><a href="refund-dashboard.html">Refunds</a></li>
+                <li><a href="create-payment.html" class="btn-primary-nav">+ New Payment</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Payment Dashboard</h1>
+            <p>Manage and track all payment transactions</p>
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon completed">
+                    <i class="icon">✓</i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="completed-count">0</h3>
+                    <p>Completed Payments</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon pending">
+                    <i class="icon">⏱</i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="pending-count">0</h3>
+                    <p>Pending Payments</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon failed">
+                    <i class="icon">✗</i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="failed-count">0</h3>
+                    <p>Failed Payments</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon total">
+                    <i class="icon">$</i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="total-amount">$0.00</h3>
+                    <p>Total Revenue</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-group">
+                <label for="status-filter">Filter by Status:</label>
+                <select id="status-filter" class="filter-select">
+                    <option value="">All Statuses</option>
+                    <option value="COMPLETED">Completed</option>
+                    <option value="PENDING">Pending</option>
+                    <option value="FAILED">Failed</option>
+                    <option value="CANCELLED">Cancelled</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="payment-type-filter">Filter by Type:</label>
+                <select id="payment-type-filter" class="filter-select">
+                    <option value="">All Types</option>
+                    <option value="CARD">Card</option>
+                    <option value="BANK_TRANSFER">Bank Transfer</option>
+                    <option value="WALLET">Wallet</option>
+                    <option value="CASH">Cash</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <button class="btn-secondary" onclick="resetFilters()">Reset Filters</button>
+            </div>
+        </div>
+
+        <!-- Payments Table -->
+        <div class="table-container">
+            <table class="payments-table">
+                <thead>
+                    <tr>
+                        <th>Payment ID</th>
+                        <th>Event ID</th>
+                        <th>User ID</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="payments-table-body">
+                    <tr class="loading">
+                        <td colspan="8">Loading payments...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button class="btn-pagination" onclick="previousPage()">← Previous</button>
+            <span id="page-info">Page 1</span>
+            <button class="btn-pagination" onclick="nextPage()">Next →</button>
+        </div>
+    </div>
+
+    <!-- Modal for Payment Details -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePaymentModal()">&times;</span>
+            <h2>Payment Details</h2>
+            <div id="modal-body">
+                <p>Loading...</p>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-primary" id="update-status-btn" onclick="openStatusUpdate()">Update Status</button>
+                <button class="btn-secondary" onclick="closePaymentModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Update Modal -->
+    <div id="status-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeStatusModal()">&times;</span>
+            <h2>Update Payment Status</h2>
+            <div class="modal-body">
+                <label for="new-status">New Status:</label>
+                <select id="new-status" class="filter-select">
+                    <option value="PENDING">Pending</option>
+                    <option value="COMPLETED">Completed</option>
+                    <option value="FAILED">Failed</option>
+                    <option value="CANCELLED">Cancelled</option>
+                </select>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-primary" onclick="updatePaymentStatus()">Update</button>
+                <button class="btn-secondary" onclick="closeStatusModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/payment-refund-management.js"></script>
+    <script>
+        // Initialize dashboard on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPayments();
+            updateStatistics();
+        });
+
+        // Filter listeners
+        document.getElementById('status-filter').addEventListener('change', loadPayments);
+        document.getElementById('payment-type-filter').addEventListener('change', loadPayments);
+    </script>
+</body>
+</html>
