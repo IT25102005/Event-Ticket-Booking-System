@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refund Dashboard - Event Ticket Booking</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">PaymentHub</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="payment-dashboard.html">Payments</a></li>
+                <li><a href="refund-dashboard.html" class="active">Refunds</a></li>
+                <li><a href="create-refund.html" class="btn-primary-nav">+ New Refund</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Refund Dashboard</h1>
+            <p>Manage and process all refund requests</p>
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon pending">
+                    <i class="icon">⏳</i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="pending-refunds">0</h3>
+                    <p>Pending Refunds</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon completed">
+                    <i class="icon">✓</i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="completed-refunds">0</h3>
+                    <p>Completed Refunds</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon approved">
+                    <i class="icon">👍</i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="approved-refunds">0</h3>
+                    <p>Approved Refunds</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon total">
+                    <i class="icon">💰</i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="total-refund-amount">$0.00</h3>
+                    <p>Total Refunded</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-group">
+                <label for="refund-status-filter">Filter by Status:</label>
+                <select id="refund-status-filter" class="filter-select">
+                    <option value="">All Statuses</option>
+                    <option value="PENDING">Pending</option>
+                    <option value="APPROVED">Approved</option>
+                    <option value="REJECTED">Rejected</option>
+                    <option value="COMPLETED">Completed</option>
+                    <option value="FAILED">Failed</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="refund-type-filter">Filter by Type:</label>
+                <select id="refund-type-filter" class="filter-select">
+                    <option value="">All Types</option>
+                    <option value="FULL">Full Refund</option>
+                    <option value="PARTIAL">Partial Refund</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <button class="btn-secondary" onclick="resetRefundFilters()">Reset Filters</button>
+            </div>
+        </div>
+
+        <!-- Refunds Table -->
+        <div class="table-container">
+            <table class="payments-table">
+                <thead>
+                    <tr>
+                        <th>Refund ID</th>
+                        <th>Payment ID</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Approved By</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="refunds-table-body">
+                    <tr class="loading">
+                        <td colspan="8">Loading refunds...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button class="btn-pagination" onclick="previousRefundPage()">← Previous</button>
+            <span id="refund-page-info">Page 1</span>
+            <button class="btn-pagination" onclick="nextRefundPage()">Next →</button>
+        </div>
+    </div>
+
+    <!-- Modal for Refund Details -->
+    <div id="refund-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeRefundModal()">&times;</span>
+            <h2>Refund Details</h2>
+            <div id="refund-modal-body">
+                <p>Loading...</p>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-primary" id="approve-btn" onclick="approveRefund()">Approve</button>
+                <button class="btn-warning" id="reject-btn" onclick="rejectRefund()">Reject</button>
+                <button class="btn-secondary" onclick="closeRefundModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/payment-refund-management.js"></script>
+    <script>
+        // Initialize dashboard on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRefunds();
+            updateRefundStatistics();
+        });
+
+        // Filter listeners
+        document.getElementById('refund-status-filter').addEventListener('change', loadRefunds);
+        document.getElementById('refund-type-filter').addEventListener('change', loadRefunds);
+    </script>
+</body>
+</html>
