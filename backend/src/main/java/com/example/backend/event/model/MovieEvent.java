@@ -13,6 +13,7 @@ public class MovieEvent extends Event {
 
     // Unique fields for Movie events only
     private String director;
+    @Column(name = "event_cast")
     private String cast;
     private String genre;
     private String rating; // e.g., U, U/A, A, PG-13
