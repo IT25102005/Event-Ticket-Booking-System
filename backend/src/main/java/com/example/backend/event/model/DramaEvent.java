@@ -13,6 +13,7 @@ public class DramaEvent extends Event {
 
     // Unique fields for Drama events only
     private String director;
+    @Column(name = "event_cast")
     private String cast;
     private String language;
 
