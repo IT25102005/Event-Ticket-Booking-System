@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Seat — Event Ticket Booking System</title>
+  <link rel="stylesheet" href="css/venue-seat-management.css"/>
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><h2>🎟️ EventBook</h2><p>Venue &amp; Seat Manager</p></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Navigation</div>
+      <a class="nav-item" href="venue-dashboard.html"><span class="icon">🏠</span>Dashboard</a>
+      <a class="nav-item" href="add-venue.html"><span class="icon">➕</span>Add Venue</a>
+      <a class="nav-item active" href="add-seat.html"><span class="icon">🪑</span>Add Seat</a>
+      <a class="nav-item" href="add-seat-block.html"><span class="icon">🗂️</span>Add Seat Block</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="venue-dashboard.html">Dashboard</a> › Add Seat</div>
+      <h1>Add Individual Seat</h1>
+      <p>Add a single seat to a venue</p>
+    </div>
+
+    <form id="add-seat-form" novalidate>
+      <div class="card">
+        <div class="card-header"><span class="card-title">🪑 Seat Location</span></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="venueId">Select Venue <span class="required">*</span></label>
+            <select id="venueId">
+              <option value="">— Select Venue —</option>
+            </select>
+            <div class="form-error" id="venueId-error"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sectionName">Section <span class="required">*</span></label>
+            <input type="text" id="sectionName" placeholder="e.g. Balcony"/>
+            <div class="form-error" id="sectionName-error"></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="rowName">Row <span class="required">*</span></label>
+            <input type="text" id="rowName" placeholder="e.g. A"/>
+            <div class="form-error" id="rowName-error"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="seatNumber">Seat Number <span class="required">*</span></label>
+            <input type="text" id="seatNumber" placeholder="e.g. 1"/>
+            <div class="form-error" id="seatNumber-error"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">💰 Pricing &amp; Type</span></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="seatType">Seat Type <span class="required">*</span></label>
+            <select id="seatType">
+              <option value="REGULAR">Regular</option>
+              <option value="VIP">VIP</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="basePrice">Base Price (LKR) <span class="required">*</span></label>
+            <input type="number" id="basePrice" placeholder="0.00" min="0" step="0.01"/>
+            <div class="form-error" id="basePrice-error"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="seatStatus">Initial Status</label>
+          <select id="seatStatus" style="max-width: 300px;">
+            <option value="AVAILABLE">AVAILABLE</option>
+            <option value="BLOCKED">BLOCKED</option>
+            <option value="MAINTENANCE">MAINTENANCE</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card conditional-fields visible" id="regular-fields">
+        <div class="card-header"><span class="card-title">Regular Seat Details</span></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="regularServiceFee">Service Fee (LKR)</label>
+            <input type="number" id="regularServiceFee" value="0" min="0" step="0.01"/>
+          </div>
+          <div class="form-group" style="display:flex;align-items:flex-end;padding-bottom:4px">
+            <div class="checkbox-group">
+              <input type="checkbox" id="standardView" checked/>
+              <label for="standardView">Standard Stage View</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card conditional-fields" id="vip-fields">
+        <div class="card-header"><span class="card-title">⭐ VIP Seat Details</span></div>
+        <div class="form-row-3">
+          <div class="form-group">
+            <label class="form-label" for="vipServiceFee">VIP Service Fee (LKR)</label>
+            <input type="number" id="vipServiceFee" value="0" min="0" step="0.01"/>
+          </div>
+          <div class="form-group" style="display:flex;align-items:flex-end;padding-bottom:4px">
+            <div class="checkbox-group">
+              <input type="checkbox" id="loungeAccess"/>
+              <label for="loungeAccess">Lounge Access</label>
+            </div>
+          </div>
+          <div class="form-group" style="display:flex;align-items:flex-end;padding-bottom:4px">
+            <div class="checkbox-group">
+              <input type="checkbox" id="complimentaryDrink"/>
+              <label for="complimentaryDrink">Complimentary Drink</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;margin-bottom:40px">
+        <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">💾 Add Seat</button>
+        <button type="button" class="btn btn-ghost btn-lg" onclick="window.history.back()">← Cancel</button>
+      </div>
+    </form>
+  </main>
+</div>
+
+<script src="js/venue-seat-management.js"></script>
+<script>
+  // Setup fields based on type
+  document.getElementById('seatType').addEventListener('change', function() {
+    document.getElementById('regular-fields').classList.toggle('visible', this.value === 'REGULAR');
+    document.getElementById('vip-fields').classList.toggle('visible', this.value === 'VIP');
+  });
+
+  // Load venues
+  async function init() {
+    try {
+      const venues = await apiGetAllVenues();
+      const sel = document.getElementById('venueId');
+      venues.forEach(v => {
+        sel.innerHTML += `<option value="${v.venueId}">${v.venueName} (Capacity: ${v.capacity})</option>`;
+      });
+      // pre-select if param exists
+      const vid = getParam('venueId');
+      if (vid) sel.value = vid;
+    } catch (e) {
+      showToast('Failed to load venues', 'error');
+    }
+  }
+
+  // Validate & Submit
+  document.getElementById('add-seat-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    clearAllErrors('add-seat-form');
+    
+    let valid = true;
+    const vId = document.getElementById('venueId').value;
+    if (!vId) { showFieldError('venueId', 'Required'); valid = false; }
+    if (!document.getElementById('sectionName').value.trim()) { showFieldError('sectionName', 'Required'); valid = false; }
+    if (!document.getElementById('rowName').value.trim()) { showFieldError('rowName', 'Required'); valid = false; }
+    if (!document.getElementById('seatNumber').value.trim()) { showFieldError('seatNumber', 'Required'); valid = false; }
+    const baseP = document.getElementById('basePrice').value;
+    if (!baseP || parseFloat(baseP) < 0) { showFieldError('basePrice', 'Invalid price'); valid = false; }
+
+    if (!valid) return;
+
+    const type = document.getElementById('seatType').value;
+    const payload = {
+      sectionName: document.getElementById('sectionName').value.trim(),
+      rowName: document.getElementById('rowName').value.trim(),
+      seatNumber: document.getElementById('seatNumber').value.trim(),
+      seatType: type,
+      seatStatus: document.getElementById('seatStatus').value,
+      basePrice: parseFloat(baseP)
+    };
+
+    if (type === 'REGULAR') {
+      payload.standardView = document.getElementById('standardView').checked;
+      payload.regularServiceFee = parseFloat(document.getElementById('regularServiceFee').value) || 0;
+    } else {
+      payload.loungeAccess = document.getElementById('loungeAccess').checked;
+      payload.complimentaryDrink = document.getElementById('complimentaryDrink').checked;
+      payload.vipServiceFee = parseFloat(document.getElementById('vipServiceFee').value) || 0;
+    }
+
+    const btn = document.getElementById('submit-btn');
+    const orig = btn.innerHTML;
+    setButtonLoading(btn, true, orig);
+    try {
+      await apiAddSeat(vId, payload);
+      showToast('Seat added successfully! ✅', 'success');
+      setTimeout(() => window.location.href = `seat-management.html?venueId=${vId}`, 1500);
+    } catch (err) {
+      getFormErrors(err);
+    } finally {
+      setButtonLoading(btn, false, orig);
+    }
+  });
+
+  init();
+</script>
+</body>
+</html>
