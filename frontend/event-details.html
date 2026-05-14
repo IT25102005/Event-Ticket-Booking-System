@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details | Event Management</title>
+    <meta name="description" content="View full details of a single event.">
+    <link rel="stylesheet" href="css/event-management.css">
+</head>
+<body>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="confirm-modal">
+    <div class="modal">
+        <div class="modal-icon">⚠️</div>
+        <h3 id="confirm-title">Are you sure?</h3>
+        <p id="confirm-message">This action cannot be undone.</p>
+        <div class="modal-actions">
+            <button class="btn btn-outline" id="cancel-btn">Cancel</button>
+            <button class="btn btn-danger" id="confirm-btn">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<div class="layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">🎟️</div>
+            <div><h2>EventBook</h2><span>Event Management</span></div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section-label">Main</div>
+            <a href="event-dashboard.html" class="nav-item" data-page="event-dashboard.html"><span class="icon">📊</span> Dashboard</a>
+            <a href="add-event.html" class="nav-item" data-page="add-event.html"><span class="icon">➕</span> Add Event</a>
+        </nav>
+        <div class="sidebar-footer">SE1020 OOP Group Project</div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <header class="top-header">
+            <div class="page-title">
+                <h1 id="page-heading">Event Details</h1>
+                <p id="page-subheading">Loading...</p>
+            </div>
+            <div class="header-actions" id="action-buttons" style="display:none">
+                <button class="btn btn-outline" onclick="navigateTo('event-dashboard.html')">← Dashboard</button>
+                <button class="btn btn-warning" id="edit-btn">✏️ Edit</button>
+                <button class="btn btn-outline" id="cancel-event-btn">🚫 Cancel Event</button>
+                <button class="btn btn-danger" id="delete-btn">🗑️ Delete</button>
+            </div>
+        </header>
+
+        <div class="page-body">
+            <!-- Loading -->
+            <div id="loading-state" class="loading-spinner">
+                <div class="spinner"></div><span>Loading event details...</span>
+            </div>
+
+            <!-- Details content (hidden until loaded) -->
+            <div id="details-content" style="display:none">
+
+                <!-- Banner Image -->
+                <div class="event-banner" id="event-banner">
+                    <span id="banner-icon" style="font-size:80px">📅</span>
+                </div>
+
+                <!-- Main Details Grid -->
+                <div class="details-grid">
+
+                    <!-- Left: Main Info -->
+                    <div>
+                        <div class="detail-card" style="margin-bottom:20px">
+                            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+                                <h2 id="event-title">—</h2>
+                                <span id="status-badge" class="badge"></span>
+                                <span id="category-badge" class="badge"></span>
+                            </div>
+
+                            <!-- Event Summary (Polymorphism result) -->
+                            <div id="event-summary-box" style="background:rgba(99,102,241,0.07);border:1px solid rgba(99,102,241,0.2);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--primary-light);margin-bottom:16px"></div>
+
+                            <div class="detail-row">
+                                <span class="icon">📍</span>
+                                <div><div style="font-size:11px;color:var(--text-muted)">Venue</div>
+                                <strong id="detail-venue">—</strong></div>
+                            </div>
+                            <div class="detail-row">
+                                <span class="icon">📅</span>
+                                <div><div style="font-size:11px;color:var(--text-muted)">Date</div>
+                                <strong id="detail-date">—</strong></div>
+                            </div>
+                            <div class="detail-row">
+                                <span class="icon">⏰</span>
+                                <div><div style="font-size:11px;color:var(--text-muted)">Time</div>
+                                <strong id="detail-time">—</strong></div>
+                            </div>
+                            <div class="detail-row">
+                                <span class="icon">💰</span>
+                                <div><div style="font-size:11px;color:var(--text-muted)">Base Price</div>
+                                <strong id="detail-price">—</strong></div>
+                            </div>
+                            <div class="detail-row">
+                                <span class="icon">🎟️</span>
+                                <div><div style="font-size:11px;color:var(--text-muted)">Seats (Available / Total)</div>
+                                <strong id="detail-seats">—</strong></div>
+                            </div>
+
+                            <!-- Description -->
+                            <div style="margin-top:16px">
+                                <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Description</div>
+                                <p id="detail-description" style="font-size:14px;color:var(--text-secondary);line-height:1.7">—</p>
+                            </div>
+                        </div>
+
+                        <!-- Special Fields (type-specific) -->
+                        <div class="detail-card" id="special-fields-card" style="display:none">
+                            <div class="special-fields">
+                                <h4 id="special-fields-title">Special Details</h4>
+                                <div id="special-fields-content"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Sidebar Info -->
+                    <div>
+                        <div class="detail-card" style="margin-bottom:20px">
+                            <div class="form-section-title">📊 Event Info</div>
+                            <div class="detail-row">
+                                <span class="icon">🆔</span>
+                                <div><div style="font-size:11px;color:var(--text-muted)">Event ID</div>
+                                <strong id="detail-id">—</strong></div>
+                            </div>
+                            <div class="detail-row">
+                                <span class="icon">🏷️</span>
+                                <div><div style="font-size:11px;color:var(--text-muted)">Event Type</div>
+                                <strong id="detail-type">—</strong></div>
+                            </div>
+                            <div class="detail-row">
+                                <span class="icon">📁</span>
+                                <div><div style="font-size:11px;color:var(--text-muted)">Display Category</div>
+                                <strong id="detail-display-category">—</strong></div>
+                            </div>
+                            <div class="detail-row">
+                                <span class="icon">🕒</span>
+                                <div><div style="font-size:11px;color:var(--text-muted)">Created At</div>
+                                <strong id="detail-created">—</strong></div>
+                            </div>
+                            <div class="detail-row">
+                                <span class="icon">🔄</span>
+                                <div><div style="font-size:11px;color:var(--text-muted)">Last Updated</div>
+                                <strong id="detail-updated">—</strong></div>
+                            </div>
+                        </div>
+
+                        <!-- Seat Availability Bar -->
+                        <div class="detail-card">
+                            <div class="form-section-title">🎟️ Seat Availability</div>
+                            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px">
+                                <span id="avail-label" style="color:var(--text-secondary)">—</span>
+                                <span id="avail-pct" style="color:var(--primary-light);font-weight:600">—</span>
+                            </div>
+                            <div style="background:var(--bg-input);border-radius:20px;height:10px;overflow:hidden">
+                                <div id="avail-bar" style="height:100%;border-radius:20px;background:linear-gradient(90deg,var(--primary),var(--secondary));transition:width 0.8s ease;width:0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/event-management.js"></script>
+<script>
+    // ==========================================
+    // EVENT DETAILS PAGE LOGIC
+    // ==========================================
+
+    const eventId = getQueryParam('id');
+
+    async function loadEventDetails() {
+        if (!eventId) { showToast('No event ID provided.', 'error'); return; }
+        try {
+            const e = await getEventById(eventId);
+            renderDetails(e);
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('details-content').style.display = 'block';
+            document.getElementById('action-buttons').style.display = 'flex';
+            setupActionButtons(e);
+        } catch (err) {
+            showToast('Could not load event: ' + err.message, 'error');
+            document.getElementById('loading-state').innerHTML = `
+                <div class="empty-state"><div class="empty-icon">⚠️</div>
+                <h3>Event not found</h3><p>${err.message}</p>
+                <button class="btn btn-primary" onclick="navigateTo('event-dashboard.html')">← Dashboard</button></div>`;
+        }
+    }
+
+    function renderDetails(e) {
+        // Page heading
+        document.getElementById('page-heading').textContent = e.title || 'Event Details';
+        document.getElementById('page-subheading').textContent = `${getEventIcon(e.eventType)} ${e.eventType || ''} Event`;
+
+        // Banner image
+        const banner = document.getElementById('event-banner');
+        if (e.imageUrl) {
+            banner.innerHTML = `<img src="${e.imageUrl}" alt="${e.title}" onerror="this.parentElement.innerHTML='<span style=font-size:80px>${getEventIcon(e.eventType)}</span>'">`;
+        } else {
+            banner.innerHTML = `<span style="font-size:80px">${getEventIcon(e.eventType)}</span>`;
+        }
+
+        // Title & badges
+        document.getElementById('event-title').textContent = e.title;
+        const sb = document.getElementById('status-badge');
+        sb.className = getStatusBadge(e.status);
+        sb.textContent = e.status;
+        const cb = document.getElementById('category-badge');
+        cb.className = getCategoryBadge(e.category);
+        cb.textContent = e.category;
+
+        // Event summary (Polymorphism result)
+        document.getElementById('event-summary-box').textContent = e.eventSummary || '—';
+
+        // Main details
+        document.getElementById('detail-venue').textContent       = e.venueName || '—';
+        document.getElementById('detail-date').textContent        = formatDate(e.eventDate);
+        document.getElementById('detail-time').textContent        = formatTime(e.eventTime);
+        document.getElementById('detail-price').textContent       = formatPrice(e.basePrice);
+        document.getElementById('detail-seats').textContent       = `${e.availableSeats} / ${e.totalSeats}`;
+        document.getElementById('detail-description').textContent = e.description || 'No description provided.';
+
+        // Sidebar info
+        document.getElementById('detail-id').textContent               = e.eventId;
+        document.getElementById('detail-type').textContent             = `${getEventIcon(e.eventType)} ${e.eventType}`;
+        document.getElementById('detail-display-category').textContent = e.displayCategory || '—';
+        document.getElementById('detail-created').textContent          = e.createdAt ? new Date(e.createdAt).toLocaleString() : '—';
+        document.getElementById('detail-updated').textContent          = e.updatedAt ? new Date(e.updatedAt).toLocaleString() : '—';
+
+        // Availability bar
+        const pct = e.totalSeats > 0 ? Math.round((e.availableSeats / e.totalSeats) * 100) : 0;
+        document.getElementById('avail-label').textContent = `${e.availableSeats} of ${e.totalSeats} seats available`;
+        document.getElementById('avail-pct').textContent   = `${pct}%`;
+        setTimeout(() => { document.getElementById('avail-bar').style.width = pct + '%'; }, 100);
+
+        // Special fields
+        renderSpecialFields(e);
+    }
+
+    function renderSpecialFields(e) {
+        const card    = document.getElementById('special-fields-card');
+        const title   = document.getElementById('special-fields-title');
+        const content = document.getElementById('special-fields-content');
+        let rows = [];
+
+        if (e.eventType === 'CONCERT') {
+            title.textContent = '🎵 Concert Details';
+            rows = [
+                ['Artist Name', e.artistName],
+                ['Music Genre', e.musicGenre]
+            ];
+        } else if (e.eventType === 'SPORT') {
+            title.textContent = '⚽ Sport Details';
+            rows = [
+                ['Team One',   e.teamOne],
+                ['Team Two',   e.teamTwo],
+                ['Sport Type', e.sportType]
+            ];
+        } else if (e.eventType === 'DRAMA') {
+            title.textContent = '🎭 Drama Details';
+            rows = [
+                ['Director', e.director],
+                ['Cast',     e.cast],
+                ['Language', e.language]
+            ];
+        } else if (e.eventType === 'MOVIE') {
+            title.textContent = '🎬 Movie Details';
+            rows = [
+                ['Director', e.director],
+                ['Cast',     e.cast],
+                ['Genre',    e.genre],
+                ['Rating',   e.rating]
+            ];
+        } else if (e.eventType === 'FESTIVAL') {
+            title.textContent = '🎉 Festival Details';
+            rows = [
+                ['Theme',         e.theme],
+                ['Organizer',     e.organizerName],
+                ['Highlights',    e.highlights]
+            ];
+        }
+
+        if (rows.length > 0) {
+            content.innerHTML = rows.map(([label, val]) => `
+                <div class="detail-row" style="border-bottom:1px solid var(--border);padding:8px 0">
+                    <span style="color:var(--text-muted);font-size:13px;min-width:120px">${label}</span>
+                    <strong style="color:var(--text-primary);font-size:13px">${val || '—'}</strong>
+                </div>`).join('');
+            card.style.display = 'block';
+        }
+    }
+
+    function setupActionButtons(e) {
+        document.getElementById('edit-btn').onclick        = () => navigateTo(`edit-event.html?id=${e.eventId}`);
+        document.getElementById('cancel-event-btn').onclick = () => handleCancel(e.eventId);
+        document.getElementById('delete-btn').onclick      = () => handleDelete(e.eventId);
+    }
+
+    async function handleCancel(id) {
+        const ok = await showConfirm('Cancel Event', 'Mark this event as CANCELLED?', 'Yes, Cancel', 'warning');
+        if (!ok) return;
+        try {
+            await cancelEvent(id);
+            showToast('Event cancelled.', 'warning');
+            loadEventDetails();
+        } catch (err) { showToast(err.message, 'error'); }
+    }
+
+    async function handleDelete(id) {
+        const ok = await showConfirm('Delete Event', 'Permanently delete this event?', 'Yes, Delete', 'danger');
+        if (!ok) return;
+        try {
+            await deleteEvent(id);
+            showToast('Event deleted.', 'success');
+            setTimeout(() => navigateTo('event-dashboard.html'), 1200);
+        } catch (err) { showToast(err.message, 'error'); }
+    }
+
+    loadEventDetails();
+</script>
+</body>
+</html>
