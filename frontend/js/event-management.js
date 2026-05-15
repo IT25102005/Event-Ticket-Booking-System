@@ -223,7 +223,7 @@ function navigateTo(url) {
 }
 
 // =====================================================
-// 6. SIDEBAR ACTIVE STATE
+// 6. SIDEBAR ACTIVE STATE & THEME
 // =====================================================
 function setActiveNav() {
     const currentPage = window.location.pathname.split('/').pop();
@@ -232,5 +232,32 @@ function setActiveNav() {
     });
 }
 
+function toggleTheme() {
+    const root = document.documentElement;
+    const currentTheme = root.getAttribute('data-theme') || 'dark';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    
+    // Update switch icon
+    const themeIcon = document.getElementById('theme-icon-emoji');
+    if (themeIcon) {
+        themeIcon.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+    }
+}
+
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    
+    const themeIcon = document.getElementById('theme-icon');
+    if (themeIcon) {
+        themeIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+    }
+}
+
 // Run on all pages
-document.addEventListener('DOMContentLoaded', setActiveNav);
+document.addEventListener('DOMContentLoaded', () => {
+    setActiveNav();
+    initTheme();
+});

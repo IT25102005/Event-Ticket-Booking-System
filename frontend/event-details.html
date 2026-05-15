@@ -6,6 +6,7 @@
     <title>Event Details | Event Management</title>
     <meta name="description" content="View full details of a single event.">
     <link rel="stylesheet" href="css/event-management.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
 
@@ -46,9 +47,9 @@
             </div>
             <div class="header-actions" id="action-buttons" style="display:none">
                 <button class="btn btn-outline" onclick="navigateTo('event-dashboard.html')">← Dashboard</button>
-                <button class="btn btn-warning" id="edit-btn">✏️ Edit</button>
-                <button class="btn btn-outline" id="cancel-event-btn">🚫 Cancel Event</button>
-                <button class="btn btn-danger" id="delete-btn">🗑️ Delete</button>
+                <button class="btn btn-warning" id="edit-btn"><i class="ph ph-pencil-simple"></i> Edit</button>
+                <button class="btn btn-danger" id="cancel-event-btn"><i class="ph ph-prohibit"></i> Cancel Event</button>
+                <button class="btn" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2);" id="delete-btn"><i class="ph ph-trash"></i> Delete</button>
             </div>
         </header>
 
@@ -82,27 +83,27 @@
                             <div id="event-summary-box" style="background:rgba(99,102,241,0.07);border:1px solid rgba(99,102,241,0.2);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--primary-light);margin-bottom:16px"></div>
 
                             <div class="detail-row">
-                                <span class="icon">📍</span>
+                                <span class="icon" style="font-size: 20px; color: var(--text-muted);"><i class="ph ph-map-pin"></i></span>
                                 <div><div style="font-size:11px;color:var(--text-muted)">Venue</div>
                                 <strong id="detail-venue">—</strong></div>
                             </div>
                             <div class="detail-row">
-                                <span class="icon">📅</span>
+                                <span class="icon" style="font-size: 20px; color: var(--text-muted);"><i class="ph ph-calendar-blank"></i></span>
                                 <div><div style="font-size:11px;color:var(--text-muted)">Date</div>
                                 <strong id="detail-date">—</strong></div>
                             </div>
                             <div class="detail-row">
-                                <span class="icon">⏰</span>
+                                <span class="icon" style="font-size: 20px; color: var(--text-muted);"><i class="ph ph-alarm"></i></span>
                                 <div><div style="font-size:11px;color:var(--text-muted)">Time</div>
                                 <strong id="detail-time">—</strong></div>
                             </div>
                             <div class="detail-row">
-                                <span class="icon">💰</span>
+                                <span class="icon" style="font-size: 20px; color: var(--text-muted);"><i class="ph ph-currency-inr"></i></span>
                                 <div><div style="font-size:11px;color:var(--text-muted)">Base Price</div>
                                 <strong id="detail-price">—</strong></div>
                             </div>
                             <div class="detail-row">
-                                <span class="icon">🎟️</span>
+                                <span class="icon" style="font-size: 20px; color: var(--text-muted);"><i class="ph ph-ticket"></i></span>
                                 <div><div style="font-size:11px;color:var(--text-muted)">Seats (Available / Total)</div>
                                 <strong id="detail-seats">—</strong></div>
                             </div>
@@ -126,29 +127,29 @@
                     <!-- Right: Sidebar Info -->
                     <div>
                         <div class="detail-card" style="margin-bottom:20px">
-                            <div class="form-section-title">📊 Event Info</div>
+                            <div class="form-section-title"><i class="ph ph-chart-bar" style="margin-right: 8px"></i> Event Info</div>
                             <div class="detail-row">
-                                <span class="icon">🆔</span>
+                                <span class="icon" style="font-size: 20px; color: var(--text-muted);"><i class="ph ph-identification-card"></i></span>
                                 <div><div style="font-size:11px;color:var(--text-muted)">Event ID</div>
                                 <strong id="detail-id">—</strong></div>
                             </div>
                             <div class="detail-row">
-                                <span class="icon">🏷️</span>
+                                <span class="icon" style="font-size: 20px; color: var(--text-muted);"><i class="ph ph-tag"></i></span>
                                 <div><div style="font-size:11px;color:var(--text-muted)">Event Type</div>
                                 <strong id="detail-type">—</strong></div>
                             </div>
                             <div class="detail-row">
-                                <span class="icon">📁</span>
+                                <span class="icon" style="font-size: 20px; color: var(--text-muted);"><i class="ph ph-folder"></i></span>
                                 <div><div style="font-size:11px;color:var(--text-muted)">Display Category</div>
                                 <strong id="detail-display-category">—</strong></div>
                             </div>
                             <div class="detail-row">
-                                <span class="icon">🕒</span>
+                                <span class="icon" style="font-size: 20px; color: var(--text-muted);"><i class="ph ph-clock"></i></span>
                                 <div><div style="font-size:11px;color:var(--text-muted)">Created At</div>
                                 <strong id="detail-created">—</strong></div>
                             </div>
                             <div class="detail-row">
-                                <span class="icon">🔄</span>
+                                <span class="icon" style="font-size: 20px; color: var(--text-muted);"><i class="ph ph-arrows-clockwise"></i></span>
                                 <div><div style="font-size:11px;color:var(--text-muted)">Last Updated</div>
                                 <strong id="detail-updated">—</strong></div>
                             </div>
@@ -156,7 +157,7 @@
 
                         <!-- Seat Availability Bar -->
                         <div class="detail-card">
-                            <div class="form-section-title">🎟️ Seat Availability</div>
+                            <div class="form-section-title"><i class="ph ph-ticket" style="margin-right: 8px"></i> Seat Availability</div>
                             <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px">
                                 <span id="avail-label" style="color:var(--text-secondary)">—</span>
                                 <span id="avail-pct" style="color:var(--primary-light);font-weight:600">—</span>
@@ -180,6 +181,20 @@
 
     const eventId = getQueryParam('id');
 
+    /** Override getEventIcon locally to use Phosphor icons just for this page */
+    function getEventIcon(eventType) {
+        const map = {
+            CONCERT:    '<i class="ph ph-music-notes"></i>',
+            SPORT:      '<i class="ph ph-trophy"></i>',
+            DRAMA:      '<i class="ph ph-mask-happy"></i>',
+            MOVIE:      '<i class="ph ph-film-strip"></i>',
+            FESTIVAL:   '<i class="ph ph-confetti"></i>',
+            CONFERENCE: '<i class="ph ph-microphone-stage"></i>',
+            WORKSHOP:   '<i class="ph ph-wrench"></i>'
+        };
+        return map[eventType] || '<i class="ph ph-calendar-blank"></i>';
+    }
+
     async function loadEventDetails() {
         if (!eventId) { showToast('No event ID provided.', 'error'); return; }
         try {
@@ -201,12 +216,12 @@
     function renderDetails(e) {
         // Page heading
         document.getElementById('page-heading').textContent = e.title || 'Event Details';
-        document.getElementById('page-subheading').textContent = `${getEventIcon(e.eventType)} ${e.eventType || ''} Event`;
+        document.getElementById('page-subheading').innerHTML = `${getEventIcon(e.eventType)} ${e.eventType || ''} Event`;
 
         // Banner image
         const banner = document.getElementById('event-banner');
         if (e.imageUrl) {
-            banner.innerHTML = `<img src="${e.imageUrl}" alt="${e.title}" onerror="this.parentElement.innerHTML='<span style=font-size:80px>${getEventIcon(e.eventType)}</span>'">`;
+            banner.innerHTML = `<img src="${e.imageUrl}" alt="${e.title}" onerror="this.parentElement.innerHTML='<span style=\\'font-size:80px\\'>' + getEventIcon('${e.eventType}') + '</span>'">`;
         } else {
             banner.innerHTML = `<span style="font-size:80px">${getEventIcon(e.eventType)}</span>`;
         }
@@ -233,7 +248,7 @@
 
         // Sidebar info
         document.getElementById('detail-id').textContent               = e.eventId;
-        document.getElementById('detail-type').textContent             = `${getEventIcon(e.eventType)} ${e.eventType}`;
+        document.getElementById('detail-type').innerHTML               = `${getEventIcon(e.eventType)} ${e.eventType}`;
         document.getElementById('detail-display-category').textContent = e.displayCategory || '—';
         document.getElementById('detail-created').textContent          = e.createdAt ? new Date(e.createdAt).toLocaleString() : '—';
         document.getElementById('detail-updated').textContent          = e.updatedAt ? new Date(e.updatedAt).toLocaleString() : '—';
