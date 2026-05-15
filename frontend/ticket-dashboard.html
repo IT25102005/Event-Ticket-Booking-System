@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antigravity | Ticket Dashboard</title>
+    <link rel="stylesheet" href="css/ticket-pricing-management.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body onload="loadDashboard()">
+    
+    <div class="sidebar">
+        <span class="logo">ANTIGRAVITY</span>
+        <ul class="nav-links">
+            <li><a href="ticket-dashboard.html" class="active"><span>Dashboard</span></a></li>
+            <li><a href="add-ticket.html"><span>Add Ticket</span></a></li>
+            <li><a href="price-calculator.html"><span>Price Calculator</span></a></li>
+            <li><a href="ticket-availability.html"><span>Availability</span></a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1>Ticket Dashboard</h1>
+            <input type="text" class="search-bar" placeholder="Search tickets by name or event ID...">
+            <button class="btn btn-primary" onclick="window.location.href='add-ticket.html'">+ New Ticket</button>
+        </header>
+
+        <div class="summary-container">
+            <div class="card">
+                <h3>Total Ticket Types</h3>
+                <p id="total-types">0</p>
+            </div>
+            <div class="card" style="animation-delay: 0.5s;">
+                <h3>Active Tickets</h3>
+                <p id="active-count">0</p>
+            </div>
+            <div class="card" style="animation-delay: 1s;">
+                <h3>Sold Out</h3>
+                <p id="sold-out-count">0</p>
+            </div>
+            <div class="card" style="animation-delay: 1.5s;">
+                <h3>Est. Revenue</h3>
+                <p id="est-revenue">$0.00</p>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticket Name</th>
+                        <th>Category</th>
+                        <th>Final Price</th>
+                        <th>Availability</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ticket-table-body">
+                    <!-- Data will be loaded via JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="js/ticket-pricing-management.js"></script>
+</body>
+</html>
