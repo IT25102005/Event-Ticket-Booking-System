@@ -1,6 +1,0 @@
-{
-  "artifactType":  "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary":  "Detailed implementation plan for the User & Account Management module of the Event Ticket Booking System. Includes backend and frontend architecture, OOP concepts mapping, and APIs.",
-  "updatedAt":  "2026-05-05T04:47:15.144554300Z",
-  "requestFeedback":  true
-}
